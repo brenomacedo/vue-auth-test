@@ -1,21 +1,20 @@
 <template>
   <div class="container">
       <form class="form">
+          <input type="text" placeholder="Nome" class="input">
           <input type="text" placeholder="E-mail" class="input">
           <input type="password" placeholder="Senha" class="input">
-          <button class="login-button">Login</button>
-          <button class="login-button google-login"><i class="fab fa-google"></i></button>
-          <p>Criar conta</p>
+          <input type="password" placeholder="Confirmar Senha" class="input">
+          <button class="login-button">Register</button>
+          <p>Já tenho uma conta</p>
       </form>
   </div>
 </template>
 
 <script>
-import '@fortawesome/fontawesome-free/css/all.css'
-import '@fortawesome/fontawesome-free/js/all'
 
 export default {
-    name: 'Login'
+    name: 'Register'
 }
 </script>
 
@@ -64,11 +63,6 @@ export default {
 
 .login-button:hover {
     background-color: #00aaaa;
-}
-
-.google-login {
-    background-color: red;
-    margin-top: 5px;
 }
 
 p {
