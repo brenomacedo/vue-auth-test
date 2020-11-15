@@ -13,7 +13,7 @@
             </div>
             <button @click="toHome" class="login-button">Login</button>
             <button @click="googleLogin" class="login-button google-login"><i class="fab fa-google"></i></button>
-            <p>Criar conta</p>
+            <p @click="toRegister">Criar conta</p>
             {{ userIsAuth }}
       </form>
   </div>
@@ -49,6 +49,9 @@ export default {
             } catch {
                 alert('erro ao logar')
             }
+        },
+        toRegister: function () {
+            this.$router.push('/register')
         }
     },
     computed: mapGetters(['userIsAuth']),

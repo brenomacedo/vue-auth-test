@@ -1,10 +1,11 @@
 <template>
   <div class="container">
       <form class="form">
-          <input type="text" placeholder="Nome" class="input">
-          <input type="text" placeholder="E-mail" class="input">
+          <input v-model="name" type="text" placeholder="Nome" class="input">
+          <input v-model="email" type="text" placeholder="E-mail" class="input">
           <div class="password-container">
-                <input :type="visible ? 'text' : 'password'" placeholder="Senha" class="input">
+                <input v-model="password"
+                :type="visible ? 'text' : 'password'" placeholder="Senha" class="input">
                 <div v-if="visible" @click="toggleVisible" class="eye-icon">
                     <span><i class="fas fa-eye"></i></span>
                 </div>
@@ -12,13 +13,14 @@
                     <span><i class="fas fa-eye-slash"></i></span>
                 </div>
           </div>
-          <input type="password" placeholder="Confirmar Senha" class="input">
+          <input v-model="confirmPassword" type="password" placeholder="Confirmar Senha" class="input">
           <button @click="register" class="login-button">Register</button>
       </form>
   </div>
 </template>
 
 <script>
+import firebase from '../firebase/firebase'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all'
 
@@ -26,7 +28,11 @@ export default {
     name: 'Register',
     data() {
         return {
-            visible: true
+            visible: false,
+            name: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
         }
     },
     methods: {
@@ -35,6 +41,17 @@ export default {
         },
         register: async function ($event) {
             $event.preventDefault()
+            if(this.password !== this.confirmPassword) {
+                return alert('as senhas nao conferem')
+            }
+
+            try {
+                await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+                alert('usuario criado com sucesso!')
+                this.$router.push('/home')
+            } catch {
+                alert('erro ao cadastrar')
+            }
         }
     }
 }
