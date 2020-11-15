@@ -3,10 +3,13 @@
         <div @click="logout" class="logout">
             <i class="fas fa-door-open"></i>
         </div>
+
+        <h1>User: {{ userName }}</h1>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import firebase from '../firebase/firebase'
 import '@fortawesome/fontawesome-free/js/all.js'
 import '@fortawesome/fontawesome-free/css/all.css'
@@ -22,7 +25,8 @@ export default {
                 alert('erro ao deslogar')
             }
         }
-    }
+    },
+    computed: mapGetters(['userName', 'userAvatar'])
 }
 </script>
 

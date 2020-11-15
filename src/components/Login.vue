@@ -1,9 +1,9 @@
 <template>
   <div class="container">
       <form class="form">
-            <input type="text" placeholder="E-mail" class="input">
+            <input v-model="email" type="text" placeholder="E-mail" class="input">
             <div class="password-container">
-                <input :type="visible ? 'text' : 'password'" placeholder="Senha" class="input">
+                <input v-model="password" :type="visible ? 'text' : 'password'" placeholder="Senha" class="input">
                 <div @click="toggleVisible" v-if="visible" class="eye-icon">
                     <span><i class="fas fa-eye"></i></span>
                 </div>
@@ -11,7 +11,7 @@
                     <span><i class="fas fa-eye-slash"></i></span>
                 </div>
             </div>
-            <button @click="toHome" class="login-button">Login</button>
+            <button @click="login" class="login-button">Login</button>
             <button @click="googleLogin" class="login-button google-login"><i class="fab fa-google"></i></button>
             <p @click="toRegister">Criar conta</p>
             {{ userIsAuth }}
@@ -21,7 +21,7 @@
 
 <script>
 import firebase from '../firebase/firebase'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all'
 
@@ -29,7 +29,9 @@ export default {
     name: 'Login',
     data() {
         return {
-            visible: false
+            visible: false,
+            email: '',
+            password: ''
         }
     },
     methods: {
@@ -52,7 +54,19 @@ export default {
         },
         toRegister: function () {
             this.$router.push('/register')
-        }
+        },
+        login: async function ($event) {
+            $event.preventDefault()
+            try {
+                const user = await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+                this.setUserName(user.user.displayName)
+                this.setUserAvatar(user.user.photoURL)
+                this.$router.push('/home')
+            } catch {
+                alert('erro ao logar')
+            }
+        },
+        ...mapActions(['setUserName', 'setUserAvatar'])
     },
     computed: mapGetters(['userIsAuth']),
     created() {

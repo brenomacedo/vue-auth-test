@@ -21,6 +21,7 @@
 
 <script>
 import firebase from '../firebase/firebase'
+import { mapActions } from 'vuex'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all'
 
@@ -46,13 +47,15 @@ export default {
             }
 
             try {
-                await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-                alert('usuario criado com sucesso!')
+                const user = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+                this.setUserName(user.user.displayName)
+                this.setUserAvatar(user.user.photoURL)
                 this.$router.push('/home')
             } catch {
                 alert('erro ao cadastrar')
             }
-        }
+        },
+        ...mapActions(['setUserName', 'setUserAvatar'])
     }
 }
 </script>
