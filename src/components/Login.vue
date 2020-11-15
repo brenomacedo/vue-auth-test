@@ -11,7 +11,7 @@
                     <span><i class="fas fa-eye-slash"></i></span>
                 </div>
             </div>
-            <button class="login-button">Login</button>
+            <button @click="toHome" class="login-button">Login</button>
             <button class="login-button google-login"><i class="fab fa-google"></i></button>
             <p>Criar conta</p>
       </form>
@@ -32,6 +32,10 @@ export default {
     methods: {
         toggleVisible: function () {
             this.visible = !this.visible
+        },
+        toHome: function ($event) {
+            $event.preventDefault()
+            this.$router.push('/home')
         }
     }
 }
