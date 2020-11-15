@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <Register />
+    <Login />
   </div>
 </template>
 
 <script>
-//import Login from './components/Login'
-import Register from './components/Register'
+import Login from './components/Login'
+// import Register from './components/Register'
 
 export default {
   name: 'App',
   components: {
-    Register
+    Login
   }
 }
 </script>

@@ -1,11 +1,19 @@
 <template>
   <div class="container">
       <form class="form">
-          <input type="text" placeholder="E-mail" class="input">
-          <input type="password" placeholder="Senha" class="input">
-          <button class="login-button">Login</button>
-          <button class="login-button google-login"><i class="fab fa-google"></i></button>
-          <p>Criar conta</p>
+            <input type="text" placeholder="E-mail" class="input">
+            <div class="password-container">
+                <input :type="visible ? 'text' : 'password'" placeholder="Senha" class="input">
+                <div @click="toggleVisible" v-if="visible" class="eye-icon">
+                    <span><i class="fas fa-eye"></i></span>
+                </div>
+                <div @click="toggleVisible" v-else class="eye-icon">
+                    <span><i class="fas fa-eye-slash"></i></span>
+                </div>
+            </div>
+            <button class="login-button">Login</button>
+            <button class="login-button google-login"><i class="fab fa-google"></i></button>
+            <p>Criar conta</p>
       </form>
   </div>
 </template>
@@ -15,7 +23,17 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all'
 
 export default {
-    name: 'Login'
+    name: 'Login',
+    data() {
+        return {
+            visible: false
+        }
+    },
+    methods: {
+        toggleVisible: function () {
+            this.visible = !this.visible
+        }
+    }
 }
 </script>
 
@@ -76,5 +94,16 @@ p {
     font-family: var(--Poppins);
     cursor: pointer;
     margin-top: 10px;
+}
+
+.password-container {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
 }
 </style>

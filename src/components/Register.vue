@@ -3,18 +3,37 @@
       <form class="form">
           <input type="text" placeholder="Nome" class="input">
           <input type="text" placeholder="E-mail" class="input">
-          <input type="password" placeholder="Senha" class="input">
+          <div class="password-container">
+                <input :type="visible ? 'text' : 'password'" placeholder="Senha" class="input">
+                <div v-if="visible" @click="toggleVisible" class="eye-icon">
+                    <span><i class="fas fa-eye"></i></span>
+                </div>
+                <div v-else @click="toggleVisible" class="eye-icon">
+                    <span><i class="fas fa-eye-slash"></i></span>
+                </div>
+          </div>
           <input type="password" placeholder="Confirmar Senha" class="input">
           <button class="login-button">Register</button>
-          <p>Já tenho uma conta</p>
       </form>
   </div>
 </template>
 
 <script>
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all'
 
 export default {
-    name: 'Register'
+    name: 'Register',
+    data() {
+        return {
+            visible: true
+        }
+    },
+    methods: {
+        toggleVisible: function () {
+            this.visible = !this.visible
+        }
+    }
 }
 </script>
 
@@ -70,5 +89,16 @@ p {
     font-family: var(--Poppins);
     cursor: pointer;
     margin-top: 10px;
+}
+
+.password-container {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
 }
 </style>
