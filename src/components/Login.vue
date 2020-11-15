@@ -44,7 +44,8 @@ export default {
             $event.preventDefault()
             const provider = new firebase.auth.GoogleAuthProvider()
             try {
-                await firebase.auth().signInWithPopup(provider)    
+                await firebase.auth().signInWithPopup(provider)
+                this.$router.push('/home')
             } catch {
                 alert('erro ao logar')
             }

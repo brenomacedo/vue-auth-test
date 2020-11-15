@@ -13,7 +13,7 @@
                 </div>
           </div>
           <input type="password" placeholder="Confirmar Senha" class="input">
-          <button class="login-button">Register</button>
+          <button @click="register" class="login-button">Register</button>
       </form>
   </div>
 </template>
@@ -32,6 +32,9 @@ export default {
     methods: {
         toggleVisible: function () {
             this.visible = !this.visible
+        },
+        register: async function ($event) {
+            $event.preventDefault()
         }
     }
 }
