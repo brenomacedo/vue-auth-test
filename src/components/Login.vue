@@ -12,13 +12,16 @@
                 </div>
             </div>
             <button @click="toHome" class="login-button">Login</button>
-            <button class="login-button google-login"><i class="fab fa-google"></i></button>
+            <button @click="googleLogin" class="login-button google-login"><i class="fab fa-google"></i></button>
             <p>Criar conta</p>
+            {{ userIsAuth }}
       </form>
   </div>
 </template>
 
 <script>
+import firebase from '../firebase/firebase'
+import { mapGetters } from 'vuex'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all'
 
@@ -36,7 +39,24 @@ export default {
         toHome: function ($event) {
             $event.preventDefault()
             this.$router.push('/home')
+        },
+        googleLogin: async function ($event) {
+            $event.preventDefault()
+            const provider = new firebase.auth.GoogleAuthProvider()
+            try {
+                await firebase.auth().signInWithPopup(provider)    
+            } catch {
+                alert('erro ao logar')
+            }
         }
+    },
+    computed: mapGetters(['userIsAuth']),
+    created() {
+        firebase.auth().onAuthStateChanged(user => {
+            if(user) {
+                this.$router.push('/home')
+            }
+        })
     }
 }
 </script>
