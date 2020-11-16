@@ -14,14 +14,13 @@
             <button @click="login" class="login-button">Login</button>
             <button @click="googleLogin" class="login-button google-login"><i class="fab fa-google"></i></button>
             <p @click="toRegister">Criar conta</p>
-            {{ userIsAuth }}
       </form>
   </div>
 </template>
 
 <script>
 import firebase from '../firebase/firebase'
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all'
 
@@ -46,8 +45,22 @@ export default {
             $event.preventDefault()
             const provider = new firebase.auth.GoogleAuthProvider()
             try {
-                await firebase.auth().signInWithPopup(provider)
-                this.$router.push('/home')
+                const user = await firebase.auth().signInWithPopup(provider)
+                const storage = firebase.firestore().collection('users')
+                const usersRes = await storage.where('email', '==', user.user.email).get()
+                if(usersRes.empty) {
+                    await storage.doc(user.user.email).set({
+                        id: user.user.uid,
+                        name: user.user.displayName,
+                        email: user.user.email,
+                        avatar: user.user.photoURL
+                    })
+                }
+                
+                this.setUserId(user.user.uid)
+                this.setUserName(user.user.name)
+                this.setUserEmail(user.user.email)
+                this.setUserAvatar(user.user.avatar)
             } catch {
                 alert('erro ao logar')
             }
@@ -58,17 +71,24 @@ export default {
         login: async function ($event) {
             $event.preventDefault()
             try {
-                const user = await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-                this.setUserName(user.user.displayName)
-                this.setUserAvatar(user.user.photoURL)
+                const User = await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+                const storage = firebase.firestore().collection('users')
+                const data = await storage.where('email', '==', User.user.email).get()
+                let user
+                data.forEach(data => {
+                    user = data.data()
+                })
+                this.setUserId(User.user.uid)
+                this.setUserName(user.name)
+                this.setUserEmail(user.email)
+                this.setUserAvatar(user.avatar)
                 this.$router.push('/home')
             } catch {
                 alert('erro ao logar')
             }
         },
-        ...mapActions(['setUserName', 'setUserAvatar'])
+        ...mapActions(['setUserId' ,'setUserName', 'setUserAvatar', 'setUserEmail'])
     },
-    computed: mapGetters(['userIsAuth']),
     created() {
         firebase.auth().onAuthStateChanged(user => {
             if(user) {

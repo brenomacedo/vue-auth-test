@@ -5,6 +5,7 @@
         </div>
 
         <h1>User: {{ userName }}</h1>
+        <h1>User: {{ userAvatar }}</h1>
     </div>
 </template>
 
@@ -20,7 +21,6 @@ export default {
         logout: async function() {
             try {
                 await firebase.auth().signOut()
-                this.$router.push('/')
             } catch {
                 alert('erro ao deslogar')
             }

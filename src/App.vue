@@ -5,7 +5,7 @@
 </template>
 
 <script>
-// import firebase from './firebase/firebase'
+import firebase from './firebase/firebase'
 import { mapActions } from 'vuex'
 
 export default {
@@ -16,7 +16,12 @@ export default {
     ...mapActions(['setUserName', 'setUserAvatar'])
   },
   created() {
-    
+    firebase.auth().onAuthStateChanged(user => {
+      if(user) {
+        this.setUserName(user.displayName)
+        this.setUserAvatar(user.photoURL)
+      }
+    })
   },
   
 }

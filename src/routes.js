@@ -38,7 +38,7 @@ router.beforeEach((from, to ,next) => {
                 next()
             } else {
                 next({
-                    name: "Login"
+                    name: "login"
                 })
             }
         })

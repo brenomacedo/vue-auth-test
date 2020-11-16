@@ -1,11 +1,13 @@
 const state = {
-    id: 1,
-    name: 'Breno',
-    avatar: 'fakepath.com'
+    id: undefined,
+    name: undefined,
+    email: undefined,
+    avatar: undefined
 }
 
 const getters = {
     userId: state => state.id,
+    userEmail: state => state.id,
     userName: state => state.name,
     userAvatar: state => state.avatar
 }
@@ -19,6 +21,9 @@ const actions = {
     },
     setUserAvatar: ({ commit }, avatar) => {
         commit('setUserAvatar', avatar)
+    },
+    setUserEmail: ({ commit }, email) => {
+        commit('setUserEmail', email)
     }
 }
 
@@ -31,6 +36,9 @@ const mutations = {
     },
     setUserAvatar: (state, avatar) => {
         state.avatar = avatar
+    },
+    setUserEmail: (state, email) => {
+        state.email = email
     }
 }
 

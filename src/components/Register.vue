@@ -48,14 +48,25 @@ export default {
 
             try {
                 const user = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-                this.setUserName(user.user.displayName)
-                this.setUserAvatar(user.user.photoURL)
+                const storage = firebase.firestore().collection('users')
+                await storage.doc(user.user.email).set({
+                    id: user.user.uid,
+                    name: this.name,
+                    email: user.user.email,
+                    avatar: 'https://firebasestorage.googleapis.com/v0/b/vue-status-media.appspot.com/o/pic.png?alt=media&token=1cf39ea2-eb9f-494a-8714-51fc6f905de4'
+                })
+
+                this.setUserId(user.user.id)
+                this.setUserEmail(user.user.email)
+                this.setUserName(this.name)
+                this.setUserAvatar('https://firebasestorage.googleapis.com/v0/b/vue-status-media.appspot.com/o/pic.png?alt=media&token=1cf39ea2-eb9f-494a-8714-51fc6f905de4')
+
                 this.$router.push('/home')
             } catch {
                 alert('erro ao cadastrar')
             }
         },
-        ...mapActions(['setUserName', 'setUserAvatar'])
+        ...mapActions(['setUserId', 'setUserEmail', 'setUserName', 'setUserAvatar'])
     }
 }
 </script>
