@@ -1,11 +1,15 @@
 <template>
     <div class="container">
-        <div @click="logout" class="logout">
-            <i class="fas fa-door-open"></i>
+        <div class="top-bar">
+            <div class="user-info">
+                <img :src="userAvatar" alt="avatar">
+                <p>{{ userName }}</p>
+            </div> 
+            <div @click="logout" class="logout">
+                <i class="fas fa-door-open"></i>
+            </div>
         </div>
-
-        <h1>User: {{ userName }}</h1>
-        <h1>User: {{ userAvatar }}</h1>
+        <button @click="test">ola</button>
     </div>
 </template>
 
@@ -24,9 +28,12 @@ export default {
             } catch {
                 alert('erro ao deslogar')
             }
+        },
+        test: function () {
+            console.log(this.getStatus)
         }
     },
-    computed: mapGetters(['userName', 'userAvatar'])
+    computed: mapGetters(['userName', 'userAvatar', 'getStatus'])
 }
 </script>
 
@@ -35,5 +42,29 @@ export default {
     min-height: 100vh;
     background-color: lightblue;
     padding: 20px;
+}
+
+.top-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+}
+
+.user-info p {
+    font-size: 18px;
+    margin-left: 15px;
+    font-family: var(--Poppins);
 }
 </style>

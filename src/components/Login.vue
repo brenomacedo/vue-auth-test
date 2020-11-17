@@ -58,9 +58,9 @@ export default {
                 }
                 
                 this.setUserId(user.user.uid)
-                this.setUserName(user.user.name)
+                this.setUserName(user.user.displayName)
                 this.setUserEmail(user.user.email)
-                this.setUserAvatar(user.user.avatar)
+                this.setUserAvatar(user.user.photoURL)
             } catch {
                 alert('erro ao logar')
             }
@@ -82,7 +82,6 @@ export default {
                 this.setUserName(user.name)
                 this.setUserEmail(user.email)
                 this.setUserAvatar(user.avatar)
-                this.$router.push('/home')
             } catch {
                 alert('erro ao logar')
             }
