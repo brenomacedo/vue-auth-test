@@ -20,7 +20,7 @@
 
 <script>
 import firebase from '../firebase/firebase'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all'
 
@@ -61,6 +61,7 @@ export default {
                 this.setUserName(user.user.displayName)
                 this.setUserEmail(user.user.email)
                 this.setUserAvatar(user.user.photoURL)
+                this.$router.push('/home')
             } catch {
                 alert('erro ao logar')
             }
@@ -82,18 +83,18 @@ export default {
                 this.setUserName(user.name)
                 this.setUserEmail(user.email)
                 this.setUserAvatar(user.avatar)
+                this.$router.push('/home')
             } catch {
                 alert('erro ao logar')
             }
         },
         ...mapActions(['setUserId' ,'setUserName', 'setUserAvatar', 'setUserEmail'])
     },
+    computed: {...mapGetters(['userIsAuth'])},
     created() {
-        firebase.auth().onAuthStateChanged(user => {
-            if(user) {
-                this.$router.push('/home')
-            }
-        })
+        if(this.userIsAuth === true) {
+            this.$router.push('/home')
+        }
     }
 }
 </script>

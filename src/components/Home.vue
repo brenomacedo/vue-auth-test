@@ -35,6 +35,8 @@ export default {
         logout: async function() {
             try {
                 await firebase.auth().signOut()
+                this.setUserIsAuth(false)
+                this.$router.push('/')
             } catch {
                 alert('erro ao deslogar')
             }
@@ -52,7 +54,7 @@ export default {
                 alert('deu ruim')
             }
         },
-        ...mapActions(['addStatus', 'initializeStatus'])
+        ...mapActions(['addStatus', 'initializeStatus', 'setUserIsAuth'])
     },
     data() {
         return {
@@ -60,6 +62,9 @@ export default {
         }
     },
     async created() {
+        if(this.userIsAuth === false) {
+            return this.$router.push('/')
+        }
         const storage = firebase.firestore().collection('status')
         const initialS = await storage.get()
         let Status = [];
@@ -68,7 +73,7 @@ export default {
         })
         this.initializeStatus(Status)
     },
-    computed: mapGetters(['userName', 'userAvatar', 'getStatus'])
+    computed: mapGetters(['userName', 'userAvatar', 'getStatus', 'userIsAuth'])
 }
 </script>
 
