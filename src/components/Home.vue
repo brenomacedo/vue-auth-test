@@ -9,12 +9,22 @@
                 <i class="fas fa-door-open"></i>
             </div>
         </div>
-        <button @click="test">ola</button>
+        <div class="add-status">
+            <input placeholder="try post something" v-model="description" type="text">
+            <button @click="handleAddStatus">POST</button>
+        </div>
+        <div class="status">
+            <div v-for="(status, index) in getStatus" :key="index">
+                <div class="status-one">
+                    <h3>{{ status.description }}</h3>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import firebase from '../firebase/firebase'
 import '@fortawesome/fontawesome-free/js/all.js'
 import '@fortawesome/fontawesome-free/css/all.css'
@@ -29,9 +39,34 @@ export default {
                 alert('erro ao deslogar')
             }
         },
-        test: function () {
-            console.log(this.getStatus)
+        handleAddStatus: async function () {
+            const storage = firebase.firestore().collection('status')
+            try {
+                await storage.add({
+                    description: this.description
+                })
+
+                this.addStatus({ description: this.description })
+                this.description = ''
+            } catch {
+                alert('deu ruim')
+            }
+        },
+        ...mapActions(['addStatus', 'initializeStatus'])
+    },
+    data() {
+        return {
+            description: ''
         }
+    },
+    async created() {
+        const storage = firebase.firestore().collection('status')
+        const initialS = await storage.get()
+        let Status = [];
+        initialS.forEach(e => {
+            Status.push(e.data())
+        })
+        this.initializeStatus(Status)
     },
     computed: mapGetters(['userName', 'userAvatar', 'getStatus'])
 }
@@ -66,5 +101,46 @@ export default {
     font-size: 18px;
     margin-left: 15px;
     font-family: var(--Poppins);
+}
+
+.add-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+}
+
+.add-status input {
+    width: 400px;
+    height: 35px;
+    border: 1px solid #ccc;
+    outline: none;
+    padding-left: 15px;
+    font-family: var(--Poppins);
+}
+
+.add-status button {
+    width: 400px;
+    height: 35px;
+    margin-top: 10px;
+    background-color: blueviolet;
+    color: white;
+    font-family: var(--Poppins);
+    outline: none;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.status-one {
+    width: 400px;
+    padding: 10px;
+    background-color: coral;
+    margin-top: 5px;
 }
 </style>
