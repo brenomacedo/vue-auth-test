@@ -92,9 +92,6 @@ export default {
     },
     computed: {...mapGetters(['userIsAuth'])},
     created() {
-        if(this.userIsAuth === true) {
-            this.$router.push('/home')
-        }
     }
 }
 </script>

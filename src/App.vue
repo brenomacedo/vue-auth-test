@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import firebase from './firebase/firebase'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -15,17 +14,6 @@ export default {
   },
   methods: {
     ...mapActions(['setUserName', 'setUserAvatar', 'setUserIsAuth'])
-  },
-  created() {
-    firebase.auth().onAuthStateChanged(user => {
-      if(user) {
-        this.setUserName(user.displayName)
-        this.setUserAvatar(user.photoURL)
-        this.setUserIsAuth(true)
-      } else {
-        this.setUserIsAuth(false)
-      }
-    })
   },
   computed: {
     ...mapGetters(['userIsAuth'])

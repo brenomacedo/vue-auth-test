@@ -3,7 +3,7 @@
         <div class="top-bar">
             <div class="user-info">
                 <img :src="userAvatar" alt="avatar">
-                <p>{{ userName }}</p>
+                <p>{{ userIsAuth }}</p>
             </div> 
             <div @click="logout" class="logout">
                 <i class="fas fa-door-open"></i>
@@ -62,9 +62,9 @@ export default {
         }
     },
     async created() {
-        if(this.userIsAuth === false) {
-            return this.$router.push('/')
-        }
+        // if(this.userIsAuth === false) {
+        //     return this.$router.push('/')
+        // }
         const storage = firebase.firestore().collection('status')
         const initialS = await storage.get()
         let Status = [];
